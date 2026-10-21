@@ -82,3 +82,22 @@ include("include/functions.php");
     
 </body>
 </html>
+<?php
+
+if(isset($_POST["vonatBekuld"]))
+{
+    header("Location: ".uri(1));
+    exit;
+}
+else if(isset($_POST["tarsasagHozzaad"]))
+{
+    header("Location: ".uri(3));
+    exit;
+}
+else if(isset($_POST["hozzaadas"]))
+{
+    header("Location: ".uri(3));
+    exit;
+}
+
+?>

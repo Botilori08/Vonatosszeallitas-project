@@ -35,7 +35,7 @@
                     <div class="col-6 mr-2 mb-5" id="utvonalMezo">
                         <label for="utvonal">Útvonal</label>
                         <textarea name="utvonal" id="utvonal" class="input-group"></textarea>
-                        <button type="submit" class="btn btn-success mt-3">Beküldés</button>
+                        <button type="submit" class="btn btn-success mt-3" name="vonatBekuld">Beküldés</button>
                         
                     </div>
                     <input type="hidden" id="rejtettInput" name="szerelveny">

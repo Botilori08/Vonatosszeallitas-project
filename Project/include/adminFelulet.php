@@ -217,6 +217,38 @@
 
         fclose($file);
 
+        if (isset($_FILES["logoMegadott"]) && $_FILES["logoMegadott"]["error"] === UPLOAD_ERR_OK) 
+        {
+
+            $celMappa = "./";
+
+            if (!is_dir($celMappa)) {
+                mkdir($celMappa, 0777, true);
+            }
+
+            $fajlNev = basename($_FILES["logoMegadott"]["name"]);
+            $celUtvonal = $celMappa . $fajlNev;
+
+            $check = getimagesize($_FILES["logoMegadott"]["tmp_name"]);
+            if ($check !== false) 
+            {
+
+                if (move_uploaded_file($_FILES["logoMegadott"]["tmp_name"], $celUtvonal)) 
+                {
+                    echo "A(z) " . htmlspecialchars($fajlNev) . " nevű fájl feltöltése megtörtént!";
+ 
+                } 
+                else 
+                {
+                    echo "Nem sikerült a feltöltés!";
+                }
+
+            } 
+            else
+            {
+                echo "A fájl nem kép.";
+            }
+        }
 
 
     }
