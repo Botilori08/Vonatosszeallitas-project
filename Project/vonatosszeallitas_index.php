@@ -60,7 +60,7 @@ include("include/functions.php");
                             <a class="nav-link <?php linkallapotVizsgal(2);?>" aria-current="page" href="<?php echo uri(2);?>">Mentett vonatok</a>
                             </li>
                             <li class="nav-item">
-                            <a class="nav-link <?php linkallapotVizsgal(3);?>" href="<?php echo uri(3);?>">Jármű hozzáadása</a>
+                            <a class="nav-link <?php linkallapotVizsgal(3);?>" href="<?php echo uri(3);?>">Admin felület</a>
                             </li>
                         </ul>
                         </div>

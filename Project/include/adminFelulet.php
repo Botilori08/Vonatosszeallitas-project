@@ -9,10 +9,25 @@
                 <form action="<?php echo uri(3);?>" method="post" enctype="multipart/form-data">
                 <label>Vasúttársaság</label>
                 <select name="kivalaszt" id="tarsasagKivalaszt" class="form-control">
-                    <option value="MAV" default>MÁV</option>
+                    <!--<option value="MAV" default>MÁV</option>
                     <option value="GYSEV">GYSEV</option>
                     <option value="OEBB">ÖBB</option>
-                    <option value="CD">CD</option>
+                    <option value="CD">CD</option>-->
+                    <?php 
+                        $celUtvonal = 'json/*.json';
+
+                        $fileok = glob($celUtvonal);
+
+                        $optionok = "";
+
+                        for($i = 0;$i < sizeof($fileok);$i++)
+                        {
+                            $optionok .= '<option value="'.substr($fileok[$i],5,-5).'">'.substr($fileok[$i],5,-5).'</option>';
+                        }
+
+                        echo $optionok;
+                    
+                    ?>
                 </select>
                 <label>Járműtípus</label>
                 <select name="jarmuTipuskivalaszt" id="jarmuTipuskivalaszt" class="form-control">

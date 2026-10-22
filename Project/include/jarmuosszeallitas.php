@@ -62,10 +62,10 @@
         
 
         document.addEventListener("DOMContentLoaded", function() {
-            betolt("MAVforras.json", "kivalasztoListaMAV","MAV","MÁV.png");
-            betolt("GYSEVforras.json", "kivalasztoListaGYSEV","GYSEV","GYSEV_logo.svg.webp");
-            betolt("OEBBforras.json", "kivalasztoListaOEBB","OEBB","Logo_ÖBB.svg.webp");
-            betolt("CDforras.json", "kivalasztoListaCD","CD","ČD_logo.svg.webp");
+            betolt("json/MAVforras.json", "kivalasztoListaMAV","MAV","MÁV.png");
+            betolt("json/GYSEVforras.json", "kivalasztoListaGYSEV","GYSEV","GYSEV_logo.svg.webp");
+            betolt("json/OEBBforras.json", "kivalasztoListaOEBB","OEBB","Logo_ÖBB.svg.webp");
+            betolt("json/CDforras.json", "kivalasztoListaCD","CD","ČD_logo.svg.webp");
         });
 
         let betoltott;
