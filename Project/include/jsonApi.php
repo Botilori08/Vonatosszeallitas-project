@@ -1,6 +1,12 @@
 <?php
 
-    $fileNev = 'json/*.json';
+    $mappa = 'json/';
+
+    $jsonok = scandir($mappa);
+
+
+    var_dump($jsonok);
+
     $divId = "";
 
 ?>
