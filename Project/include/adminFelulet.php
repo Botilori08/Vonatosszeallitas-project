@@ -72,9 +72,9 @@
     
     function jsonMegszerez(obj)
     {
-        jsonNeve = obj.value+"forras.json";
+        jsonNeve = "json/"+obj.value+".json";
 
-        let forras = []
+        let forras = [];
 
         let jarmuTipuskivalaszt = document.getElementById("jarmuTipuskivalaszt");
         
