@@ -14,7 +14,7 @@
                     <option value="OEBB">ÖBB</option>
                     <option value="CD">CD</option>-->
                     <?php 
-                        $celUtvonal = 'json/*.json';
+                        $celUtvonal = 'include/json/*.json';
 
                         $fileok = glob($celUtvonal);
 
@@ -22,7 +22,7 @@
 
                         for($i = 0;$i < sizeof($fileok);$i++)
                         {
-                            $optionok .= '<option value="'.substr($fileok[$i],5,-5).'">'.substr($fileok[$i],5,-5).'</option>';
+                            $optionok .= '<option value="'.substr($fileok[$i],5,-5).'">'.str_replace("forras.json","",substr($fileok[$i],13)).'</option>';
                         }
 
                         echo $optionok;
@@ -72,7 +72,7 @@
     
     function jsonMegszerez(obj)
     {
-        jsonNeve = "json/"+obj.value+".json";
+        jsonNeve = "include/json/"+obj.value+".json";
 
         let forras = [];
 
@@ -226,7 +226,7 @@
 		}
 
 
-        $file = fopen($nev."forras.json","w");
+        $file = fopen("include/json/".$nev."forras.json","w");
 
         fwrite($file,json_encode($teljesForras));
 
@@ -235,7 +235,7 @@
         if (isset($_FILES["logoMegadott"]) && $_FILES["logoMegadott"]["error"] === UPLOAD_ERR_OK) 
         {
 
-            $celMappa = "./";
+            $celMappa = "include/logok";
 
             if (!is_dir($celMappa)) {
                 mkdir($celMappa, 0777, true);

@@ -1,17 +1,5 @@
 <div class="col-12">
         <div class="row mb-4">
-                <div class="col-3" id="kivalasztoListaMAV" >
-
-                </div>
-                <div class="col-3" id="kivalasztoListaGYSEV">
-
-                </div>
-                <div class="col-3" id="kivalasztoListaOEBB">
-
-                </div>
-                <div class="col-3" id="kivalasztoListaCD">
-
-                </div>
 
             </div>
             <div class="row ml-2 mr-2" id="adatokUrlap">
@@ -59,15 +47,34 @@
 
     <script>
 
+        let tarsasagok = [];
+        
+        fetch("include/jsonApi.php")
+        .then(x => x.json())
+        .then(y =>
+        {
+            y.forEach(x =>
+                {
+                document.addEventListener("DOMContentLoaded", function() {
+                    betolt(x.eleresiUt, x.divId,x.mappaNev,x.logo);
+                })
+            });
+        }
+        )
         
         
 
-        document.addEventListener("DOMContentLoaded", function() {
-            betolt("json/MAVforras.json", "kivalasztoListaMAV","MAV","MÁV.png");
-            betolt("json/GYSEVforras.json", "kivalasztoListaGYSEV","GYSEV","GYSEV_logo.svg.webp");
-            betolt("json/OEBBforras.json", "kivalasztoListaOEBB","OEBB","Logo_ÖBB.svg.webp");
-            betolt("json/CDforras.json", "kivalasztoListaCD","CD","ČD_logo.svg.webp");
-        });
+
+
+
+        /*document.addEventListener("DOMContentLoaded", function() {
+            betolt("include/json/MAVforras.json", "kivalasztoListaMAV","MAV","include/logok/MÁV.png");
+            betolt("include/json/GYSEVforras.json", "kivalasztoListaGYSEV","GYSEV","include/logok/GYSEV_logo.svg.webp");
+            betolt("include/json/OEBBforras.json", "kivalasztoListaOEBB","OEBB","include/logok/ÖBB.svg.webp");
+            betolt("include/json/CDforras.json", "kivalasztoListaCD","CD","include/logok/CD_logo.svg.webp");
+        });*/
+
+
 
         let betoltott;
         let jarmuvek = [];
