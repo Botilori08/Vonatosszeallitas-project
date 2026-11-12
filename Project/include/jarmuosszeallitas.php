@@ -1,5 +1,5 @@
 <div class="col-12">
-        <div class="row mb-4">
+        <div class="row mb-4" id="tarsasagokHelye">
 
             </div>
             <div class="row ml-2 mr-2" id="adatokUrlap">
@@ -48,49 +48,48 @@
     <script>
 
         let tarsasagok = [];
-        
-        fetch("include/jsonApi.php")
-        .then(x => x.json())
-        .then(y =>
-        {
-            y.forEach(x =>
-                {
-                document.addEventListener("DOMContentLoaded", function() {
-                    betolt(x.eleresiUt, x.divId,x.mappaNev,x.logo);
-                })
-            });
-        }
-        )
-        
-        
-
-
-
-
-        /*document.addEventListener("DOMContentLoaded", function() {
-            betolt("include/json/MAVforras.json", "kivalasztoListaMAV","MAV","include/logok/MÁV.png");
-            betolt("include/json/GYSEVforras.json", "kivalasztoListaGYSEV","GYSEV","include/logok/GYSEV_logo.svg.webp");
-            betolt("include/json/OEBBforras.json", "kivalasztoListaOEBB","OEBB","include/logok/ÖBB.svg.webp");
-            betolt("include/json/CDforras.json", "kivalasztoListaCD","CD","include/logok/CD_logo.svg.webp");
-        });*/
-
-
-
         let betoltott;
         let jarmuvek = [];
         let url = "";
+        
+        function apiBetolt()
+        {
+            fetch("include/jsonApi.php")
+            .then(x => x.json())
+            .then(y =>
+            {
+                console.log(y);
+
+                tarsasagok = y;
+
+                let tarsasagokHelye = document.getElementById("tarsasagokHelye");
+                tarsasagok.forEach(x => 
+                {
+                    betolt(x.eleresiUt, x.divId, x.mappaNev, x.logo).then(keszDoboz => {
+                    tarsasagokHelye.appendChild(keszDoboz);
+                    });
+                })
+
+
+            });
+        }
+        document.addEventListener("DOMContentLoaded", apiBetolt());
+
 
         function betolt(fajlNev,divId,mappaNev,logo)
         {
-            fetch(fajlNev)
+            return fetch(fajlNev)
             .then(x => x.json())
             .then(y => 
                 {
                     //console.log(y)
 
-                    let jarmuvekHelye = document.getElementById(divId);
+                    //let jarmuvekHelye = document.getElementById(divId);
 
                     jarmuvek = y;
+
+                    let div = document.createElement("div");
+
 
 
                     let tarsasagDoboz = document.createElement("details")
@@ -128,10 +127,8 @@
                         let nagyKepesdiv = document.createElement("div");
                         nagyKepesdiv.classList.add("col-12");
 
-
                         e.kepek.sort();
                          
-
                         e.kepek.forEach(kep => 
                             {
                                 let kepDoboz = document.createElement("div")
@@ -162,14 +159,33 @@
                         reszletek.appendChild(nagyKepesdiv);
                         nagyDoboz.appendChild(reszletek);
                         tarsasagDoboz.appendChild(nagyDoboz);
-                        jarmuvekHelye.appendChild(tarsasagDoboz);
 
+                        return tarsasagDoboz;
+                        
                     });
-
 
                 }
             )
         }
+
+
+        function divekLetrehozasa()
+        {
+
+        }
+
+
+        
+
+
+
+
+        /*document.addEventListener("DOMContentLoaded", function() {
+            betolt("include/json/MAVforras.json", "kivalasztoListaMAV","MAV","include/logok/MÁV.png");
+            betolt("include/json/GYSEVforras.json", "kivalasztoListaGYSEV","GYSEV","include/logok/GYSEV_logo.svg.webp");
+            betolt("include/json/OEBBforras.json", "kivalasztoListaOEBB","OEBB","include/logok/ÖBB.svg.webp");
+            betolt("include/json/CDforras.json", "kivalasztoListaCD","CD","include/logok/CD_logo.svg.webp");
+        });*/
 
         let jarmuSzam = 0;
 
