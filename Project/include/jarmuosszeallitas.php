@@ -47,126 +47,74 @@
 
     <script>
 
-        let tarsasagok = [];
-        let betoltott;
-        let jarmuvek = [];
-        let url = "";
-        
-        function apiBetolt()
-        {
-            fetch("include/jsonApi.php")
-            .then(x => x.json())
-            .then(y =>
-            {
-                console.log(y);
+let tarsasagok = [];
+let betoltott;
+let url = "";
 
-                tarsasagok = y;
+async function apiBetolt() {
+    const valasz = await fetch("include/jsonApi.php");
+    tarsasagok = await valasz.json();
 
-                let tarsasagokHelye = document.getElementById("tarsasagokHelye");
-                tarsasagok.forEach(x => 
-                {
-                    betolt(x.eleresiUt, x.divId, x.mappaNev, x.logo).then(keszDoboz => {
-                    tarsasagokHelye.appendChild(keszDoboz);
-                    });
-                })
+    const tarsasagokHelye = document.getElementById("tarsasagokHelye");
+
+    for (const x of tarsasagok) {
+        const keszDoboz = await betolt(x.eleresiUt, x.divId, x.mappaNev, x.logo);
+        tarsasagokHelye.appendChild(keszDoboz);
+    }
+}
+document.addEventListener("DOMContentLoaded", apiBetolt);
+
+async function betolt(fajlNev, divId, mappaNev, logo) {
+    const valasz = await fetch(fajlNev);
+    const jarmuvek = await valasz.json();
+
+    let tarsasagDoboz = document.createElement("details");
+    tarsasagDoboz.className = "border border-black rounded p-3";
+
+    let cim = document.createElement("summary");
+    let tarsasagLogo = document.createElement("img");
+    tarsasagLogo.src = logo;
+    tarsasagLogo.className = "logo";
+    cim.appendChild(tarsasagLogo);
+    tarsasagDoboz.appendChild(cim);
+
+    jarmuvek.forEach((e) => {
+        let nagyDoboz = document.createElement("div");
+        nagyDoboz.classList.add("col-12", "border", "border-black", "rounded", "mb-2", "p-2");
+
+        let reszletek = document.createElement("details");
+        let reszletCim = document.createElement("summary");
+        reszletCim.innerHTML = "<h4>" + e.nev + "</h4>";
+        reszletek.appendChild(reszletCim);
+
+        let nagyKepesdiv = document.createElement("div");
+        nagyKepesdiv.classList.add("col-12");
+
+        e.kepek.sort();
+
+        e.kepek.forEach(kep => {
+            let kepDoboz = document.createElement("div");
+            kepDoboz.addEventListener("click", function() { kivalaszt(this); });
+            kepDoboz.classList.add("col-12", "kepesDoboz", "overflow-scroll", "p-3");
+
+            let img = document.createElement("img");
+            if (e.nev.includes("mozdony") || e.nev == "Motorkocsik/motorvonatok" || e.nev == "Vezérlőkocsik") {
+                img.dataset["vontatojarmu"] = true;
+            }
+            img.src = "kepek/" + mappaNev + "/" + kep;
+
+            kepDoboz.appendChild(img);
+            nagyKepesdiv.appendChild(kepDoboz);
+        });
+
+        reszletek.appendChild(nagyKepesdiv);
+        nagyDoboz.appendChild(reszletek);
+        tarsasagDoboz.appendChild(nagyDoboz);
+    });
 
 
-            });
-        }
-        document.addEventListener("DOMContentLoaded", apiBetolt());
-
-
-        function betolt(fajlNev,divId,mappaNev,logo)
-        {
-            return fetch(fajlNev)
-            .then(x => x.json())
-            .then(y => 
-                {
-                    //console.log(y)
-
-                    //let jarmuvekHelye = document.getElementById(divId);
-
-                    jarmuvek = y;
-
-                    let div = document.createElement("div");
-
-
-
-                    let tarsasagDoboz = document.createElement("details")
-                    tarsasagDoboz.className = "border border-black rounded p-3"
-                    let cim = document.createElement("summary");
-                    let tarsasagLogo = document.createElement("img");
-                    tarsasagLogo.src = logo;
-                    tarsasagLogo.className = "logo";
-                    cim.appendChild(tarsasagLogo)
-                    tarsasagDoboz.appendChild(cim)
-
-                    
-
-                    //console.log(jarmuvek)
-
-                    jarmuvek.forEach((e,i) => {
-                        //console.log(e);
-                        
-                        
-                        let nagyDoboz = document.createElement("div");
-                        nagyDoboz.classList.add("col-12");
-                        nagyDoboz.classList.add("border");
-                        nagyDoboz.classList.add("border-black");
-                        nagyDoboz.classList.add("rounded");
-                        nagyDoboz.classList.add("mb-2")
-                        nagyDoboz.classList.add("p-2")
-
-                        let reszletek = document.createElement("details");
-                        let cim = document.createElement("summary");
-                        cim.innerHTML = "<h4>"+e.nev+"</h4>";
-
-                        reszletek.appendChild(cim);
-                        nagyDoboz.appendChild(reszletek);
-
-                        let nagyKepesdiv = document.createElement("div");
-                        nagyKepesdiv.classList.add("col-12");
-
-                        e.kepek.sort();
-                         
-                        e.kepek.forEach(kep => 
-                            {
-                                let kepDoboz = document.createElement("div")
-                                kepDoboz.addEventListener("click",function() {kivalaszt(this)})
-                                kepDoboz.classList.add("col-12")
-                                kepDoboz.classList.add("kepesDoboz")
-                                //kepDoboz.classList.add("border");
-                                //kepDoboz.classList.add("border-black")
-                                //kepDoboz.classList.add("overflow-x-auto")
-                                //kepDoboz.classList.add("d-flex")
-                                //kepDoboz.classList.add("flex-nowrap")
-                                //kepDoboz.classList.add("align-items-end")
-                                kepDoboz.classList.add("overflow-scroll")
-                                kepDoboz.classList.add("p-3")
-                                let img = document.createElement("img")
-                                //img.classList.add("img-fluid")
-                                if(e.nev.includes("mozdony") || e.nev == "Motorkocsik/motorvonatok" || e.nev == "Vezérlőkocsik")
-                                {
-                                    img.dataset["vontatojarmu"] = true;
-                                }
-                                img.src = "kepek/"+mappaNev+"/"+kep;
-                                //img.classList.add("img-fluid");
-                                kepDoboz.appendChild(img);
-                                nagyKepesdiv.appendChild(kepDoboz);
-                                
-                            }
-                        )
-                        reszletek.appendChild(nagyKepesdiv);
-                        nagyDoboz.appendChild(reszletek);
-                        tarsasagDoboz.appendChild(nagyDoboz);
-
-                        return tarsasagDoboz;
-                        
-                    });
-
-                }
-            )
-        }
+    return tarsasagDoboz;
+}
 
 
         function divekLetrehozasa()

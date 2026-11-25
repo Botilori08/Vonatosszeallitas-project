@@ -2,7 +2,7 @@
     <div class="row">
         <div class="card">
             <div class="card-head">
-                <h1>Admin felület</h1>
+                <h1>Jármű hozzáadása</h1>
                 <hr>
             </div> 
             <div class="card-body">
@@ -16,13 +16,16 @@
                     <?php 
                         $celUtvonal = 'include/json/*.json';
 
+                        echo $celUtvonal;
+
                         $fileok = glob($celUtvonal);
 
                         $optionok = "";
 
-                        for($i = 0;$i < sizeof($fileok);$i++)
+                       for($i = 0; $i < sizeof($fileok); $i++)
                         {
-                            $optionok .= '<option value="'.substr($fileok[$i],5,-5).'">'.str_replace("forras.json","",substr($fileok[$i],13)).'</option>';
+                            $tarsasagNev = str_replace("forras.json", "", substr($fileok[$i], 13));
+                            $optionok .= '<option value="'.$tarsasagNev.'">'.$tarsasagNev.'</option>';
                         }
 
                         echo $optionok;
@@ -67,12 +70,14 @@
 
     tarsasagKivalaszt.addEventListener("change",function() {jsonMegszerez(this)});
 
+
     let jsonNeve = "";
     let optionNevek = [];
+
     
     function jsonMegszerez(obj)
     {
-        jsonNeve = "include/json/"+obj.value+".json";
+        jsonNeve = "include/json/"+obj.value+"forras.json";
 
         let forras = [];
 
@@ -169,7 +174,7 @@
         }
 
 
-        $jsonAdatok = json_decode(file_get_contents($vasuttarsasag."forras.json"));
+        $jsonAdatok = json_decode(file_get_contents("include/json/".$vasuttarsasag."forras.json"));
 
         //var_dump($jsonAdatok[0]->kepek);
 
@@ -181,7 +186,7 @@
             }
         }
 
-        file_put_contents($vasuttarsasag."forras.json",json_encode($jsonAdatok));
+        file_put_contents("include/json/".$vasuttarsasag."forras.json",json_encode($jsonAdatok));
 
 
     }
