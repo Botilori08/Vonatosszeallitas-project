@@ -68,6 +68,8 @@
 
     let tarsasagKivalaszt = document.getElementById("tarsasagKivalaszt");
 
+    tarsasagKivalaszt.addEventListener("DOMContentLoaded",function() {jsonMegszerez(tarsasagKivalaszt)});
+
     tarsasagKivalaszt.addEventListener("change",function() {jsonMegszerez(this)});
 
 
