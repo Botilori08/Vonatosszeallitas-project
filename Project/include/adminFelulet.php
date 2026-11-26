@@ -60,6 +60,46 @@
                 </form>
             </div>
     </div>
+    <div class="row mt-3 mb-5">
+        <div class="card">
+            <div class="card-head">
+                <h1>Kategória hozzáadása</h1>
+                <hr>
+            </div> 
+            <div class="card-body">
+                <form action="<?php echo uri(3);?>" method="post" enctype="multipart/form-data">
+                <label>Vasúttársaság</label>
+                <select name="kivalasztTarsasag" id="tarsasagKivalasztas" class="form-control">
+                    <!--<option value="MAV" default>MÁV</option>
+                    <option value="GYSEV">GYSEV</option>
+                    <option value="OEBB">ÖBB</option>
+                    <option value="CD">CD</option>-->
+                    <?php 
+                        $celUtvonal = 'include/json/*.json';
+
+                        echo $celUtvonal;
+
+                        $fileok = glob($celUtvonal);
+
+                        $optionok = "";
+
+                       for($i = 0; $i < sizeof($fileok); $i++)
+                        {
+                            $tarsasagNev = str_replace("forras.json", "", substr($fileok[$i], 13));
+                            $optionok .= '<option value="'.$tarsasagNev.'">'.$tarsasagNev.'</option>';
+                        }
+
+                        echo $optionok;
+                    
+                    ?>
+                </select>
+                <label>Kategóriák</label>
+                <textarea name="hozzaadandoKategoriak" placeholder="Add meg a hozzáadni kívánt kategóriákat! Minden kategóriát új sorba írj!" class="form-control" ></textarea>
+                <button type="submit" class="btn btn-dark mt-2" name="kategoriaHozzaad">Kategória hozzáadása</button>
+                </form>
+            </div>
+    </div>
+    </div>
 </div>
 </div>
 </div>
@@ -119,7 +159,21 @@
 </script>
 
 <?php
+    
     //phpinfo(32);
+
+    class Jarmutipus
+	{
+		public $nev;
+		public $kepek;
+
+		public function __construct($nev,$kepek)
+		{
+			$this->$nev = $nev;
+			$this->$kepek = $kepek;
+		}
+
+	}
 
     if(isset($_POST["hozzaadas"]))
     {
@@ -129,11 +183,11 @@
 
 
 
-        if(isset($_POST["kivalaszt"]) && htmlspecialchars($_POST["kivalaszt"]))
+        if(isset($_POST["kivalaszt"]) && htmlspecialchars($_POST["kivalaszt"]) && $_POST["kivalaszt"] !== "")
         {
             $vasuttarsasag = $_POST["kivalaszt"];
         }
-        if(isset($_POST["jarmuTipuskivalaszt"]) && htmlspecialchars($_POST["jarmuTipuskivalaszt"]))
+        if(isset($_POST["jarmuTipuskivalaszt"]) && htmlspecialchars($_POST["jarmuTipuskivalaszt"]) && $_POST["jarmuTipuskivalaszt"] !== "")
         {
             $jarmutipus = $_POST["jarmuTipuskivalaszt"];
         }
@@ -209,19 +263,7 @@
             $kategoriak = $vagas;
         }
 
-		
-		class Jarmutipus
-		{
-			public $nev;
-			public $kepek;
-
-			public function __construct($nev,$kepek)
-			{
-				$this->$nev = $nev;
-				$this->$kepek = $kepek;
-			}
-
-		}
+	
 
         //var_dump($kategoriak);
 
@@ -273,6 +315,57 @@
         }
 
 
+    }
+
+    if(isset($_POST["kategoriaHozzaad"]))
+    {
+        $vasuttarsasag = "";
+        $kategoriak = [];
+
+
+        if(isset($_POST["kivalasztTarsasag"]) && htmlspecialchars($_POST["kivalasztTarsasag"]) && $_POST["kivalasztTarsasag"] !== "")
+        {
+            $vasuttarsasag = $_POST["kivalasztTarsasag"];
+        }
+        
+        if(isset($_POST["hozzaadandoKategoriak"]) && htmlspecialchars($_POST["hozzaadandoKategoriak"]))
+        {
+            $vagas = explode(PHP_EOL,$_POST["hozzaadandoKategoriak"]);
+            $kategoriak = $vagas;
+        }
+
+        $fileNev = "include/json/".$vasuttarsasag."forras.json";
+
+        if(file_exists($fileNev))
+        {
+            $content = file_put_contents($fileNev);
+            $adatok = json_decode($content,true);
+
+            if(sizeof($adatok) == 0)
+            {
+                $adatok = [];
+            }
+        }
+        else
+        {
+            $adatok = [];
+        }
+
+
+        foreach($kategoriak as $egyAdat)
+        {
+            $adatok[] = ["nev"=>$egyAdat,"kepek"=>[]];
+        }
+
+
+
+        $forrasString = json_encode($teljesForras);
+
+        fwrite($file,json_encode($teljesForras));
+
+        fclose($file);
+
+        
     }
 
 ?>
